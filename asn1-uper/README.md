@@ -21,4 +21,4 @@ More commercial and free ASN.1 tools and vendors are listed at [ITU ASN.1 Tools 
 
 
 ### License
-This code is released under the business-friendly Apache 2.0 license.
+This code is released under Apache 2.0 license.

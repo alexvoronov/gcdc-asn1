@@ -3,9 +3,6 @@ package net.gcdc.asn1.datatypes;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Class to represent ASN.1 construct "SEQUENCE OF".
  * <p/>
@@ -34,7 +31,6 @@ import org.slf4j.LoggerFactory;
  * @param <T> type of elements contained.
  */
 public abstract class Asn1SequenceOf<T> extends AbstractList<T> {
-    private final static Logger logger = LoggerFactory.getLogger(Asn1SequenceOf.class);
 
     private final List<T> bakingList;
 
@@ -43,9 +39,6 @@ public abstract class Asn1SequenceOf<T> extends AbstractList<T> {
 
     public Asn1SequenceOf() { this(new ArrayList<T>()); }
     public Asn1SequenceOf(Collection<T> coll) {
-        logger.trace("Instantinating Sequence Of {} with {}",
-                ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0],
-                coll);
         bakingList = new ArrayList<>(coll);
     }
 
