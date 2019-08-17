@@ -7,9 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the field is OPTIONAL in ASN.1. Implemented as null. Equivalent to @Nullable.
+ * Indicates that the field is OPTIONAL in ASN.1. Implemented as null. Equivalent to {@code @Nullable}.
  *
- * Using Optional<T> would require Manifests to capture generics (like in Gson).
+ * Using {@code Optional<T>} would require Manifests to capture generics (like in Gson).
  *
  */
 @Target({ElementType.FIELD})

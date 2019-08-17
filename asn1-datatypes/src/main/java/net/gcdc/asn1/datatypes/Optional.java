@@ -88,7 +88,7 @@ public class Optional<T> {
 
     /** Returns an empty option.
      *
-     * @param <A>
+     * @param <A> the type of the value
      * @return an empty Option */
     public static <A> Optional<A> empty() {
         return new Optional<A>(null, false);

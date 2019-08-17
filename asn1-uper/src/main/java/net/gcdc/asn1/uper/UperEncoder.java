@@ -22,13 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** A "quick-and-dirty" implementation of ASN.1 encoder for UPER (Unaligned Packed Encoding Rules).
- *
- * @see ITU-T Recommendation <a
- *      href="http://www.itu.int/ITU-T/recommendations/rec.aspx?rec=x.691">X.691</a>
- *
- *      TODO: Cover the rest of (useful) ASN.1 datatypes and PER-visible constraints,
- *      write unit tests for them. Clean-up, do more refactoring.
- **/
+ * <p>
+ * See ITU-T Recommendation <a href="http://www.itu.int/rec/T-REC-X.691">X.691</a>.
+ */
 public final class UperEncoder {
     final static Logger logger = LoggerFactory.getLogger(UperEncoder.class);
 
@@ -258,9 +254,12 @@ public final class UperEncoder {
         }
         if (hasExtensionMarker) {
             boolean extensionIsActive = bitqueue.get();
+            logger.debug("Constrained int with extension marker, extension is {} ", extensionIsActive ? "active" : "not active");
             if (extensionIsActive) {
-                throw new UnsupportedOperationException(
-                    "int extension are not supported yet");
+                // Constrained int with extension seems to be only for Length Determinants, i.e. they become
+                // "semi-constrained integer". If they can become "unconstrained", the code have to be modified.
+                logger.debug("Constrained int with active extension, decoding as Length Determinant");
+                return decodeLengthDeterminant(bitqueue);
             }
         }
         final long range = upperBound - lowerBound + 1;

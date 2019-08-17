@@ -5,9 +5,9 @@ import java.util.*;
 
 /**
  * Class to represent ASN.1 construct "SEQUENCE OF".
- * <p/>
- * Extending classes should specify concrete types for T, generic collections can't be decoded (yet?).
- * <p/>
+ * <p>
+ * Extending classes should specify concrete types for {@code T}, generic collections can't be decoded (yet?).
+ * <p>
  * Usage example:
  * <PRE>
  * <code>
@@ -17,14 +17,14 @@ import java.util.*;
  *     int age;
  *     Children children;
  * }
- * public class Children extends {@code Asn1SequenceOf<ChildInformation> } {
+ * public class Children extends Asn1SequenceOf&lt;ChildInformation&gt; {
  *     public Children() { super(); }
- *     public Children({@code Collection<ChildInformation>} coll) { super(coll); }
+ *     public Children(Collection&lt;ChildInformation&gt; coll) { super(coll); }
  * }
  * </code>
  * </PRE>
  *
- * <p/>
+ * <p>
  * Actually, UPER decoder and encoder consider anything that extends {@code List<T>} as a SEQUENCE OF.
  *
  *
