@@ -64,23 +64,31 @@ class EnumCoder implements Decoder, Encoder {
         AnnotationStore annotations = new AnnotationStore(classOfT.getAnnotations(),
                 extraAnnotations);
         UperEncoder.logger.debug("ENUM");
-        if (UperEncoder.hasExtensionMarker(annotations)) {
-            boolean extensionPresent = bitbuffer.get();
-            UperEncoder.logger.debug("with extension marker, {}", extensionPresent ? "present" : "absent");
-            if (extensionPresent) {
-                throw new UnsupportedOperationException(
-                        "choice extension is not implemented yet");
+        T value = null;
+        if (UperEncoder.hasExtensionMarker(annotations)
+                && bitbuffer.get()) {   // extension present
+            UperEncoder.logger.debug("with extension marker, extension present");
+            boolean isGreaterThan64 = bitbuffer.get();
+            // The decoded value is discarded - no way to return an undefined enum value, just consuming the bits.
+            if (!isGreaterThan64) {
+                UperEncoder.decodeConstrainedInt(bitbuffer, UperEncoder.newRange(0, uintMax(6), false));
             } else {
-                // We already consumed the bit, keep processing as if there were no extension.
+                int numOctets = (int) UperEncoder.decodeLengthDeterminant(bitbuffer);
+                UperEncoder.decodeConstrainedInt(bitbuffer, UperEncoder.newRange(0, uintMax(numOctets * 8), false));
             }
+        } else {
+            T[] enumValues = classOfT.getEnumConstants();
+            int index = (int) UperEncoder.decodeConstrainedInt(bitbuffer,
+                    UperEncoder.newRange(0, enumValues.length - 1, false));
+            if (index > enumValues.length - 1) { throw new IllegalArgumentException(
+                    "decoded enum index " + index + " is larger than number of elements (0.."
+                            + enumValues.length + ") in " + classOfT.getName()); }
+            value = enumValues[index];
         }
-        T[] enumValues = classOfT.getEnumConstants();
-        int index = (int) UperEncoder.decodeConstrainedInt(bitbuffer,
-                UperEncoder.newRange(0, enumValues.length - 1, false));
-        if (index > enumValues.length - 1) { throw new IllegalArgumentException(
-                "decoded enum index " + index + " is larger then number of elements (0.."
-                        + enumValues.length + ") in " + classOfT.getName()); }
-        T value = enumValues[index];
-        return value;        }
+        return value;
+    }
 
+    private static int uintMax(int bits) {
+        return (int) Math.pow(2, bits) - 1;
+    }
 }
