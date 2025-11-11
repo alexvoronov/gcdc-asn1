@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.gcdc</groupId>
     <artifactId>asn1-uper</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <name>UPER encoder for ASN.1</name>
     <packaging>jar</packaging>
     <inceptionYear>2015</inceptionYear>
